@@ -18,7 +18,7 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 class AmazonSNS extends \Magento\Customer\Block\Account\Dashboard
 {
 
-    protected $_template = 'form/chk.phtml';
+    protected $_template = 'form/sendsms.phtml';
 
     public function getIsSubscribed()
     {
@@ -30,6 +30,6 @@ class AmazonSNS extends \Magento\Customer\Block\Account\Dashboard
 
     public function getAction()
     {
-        return $this->getUrl('chk/manage/save');
+        return $this->getUrl('sendsms/manage/save');
     }
 }

@@ -15,7 +15,6 @@ namespace CHK\AmazonSNS\Controller\Adminhtml\System\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use CHK\AmazonSNS\Model\SNS\SendSms as SNS;
-use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 
 class Check extends Action
@@ -54,28 +53,29 @@ class Check extends Action
     public function checkSNS($message,$number)
     {
         $response = $this->_SNS->sendSMS($message, $number);
-        return $response;
-//        if (isset($response['status']) && $response['status'] == 'queued') {
-//            return $this->sucessResult();
-//        } else {
-//            return $this->errorResult();
-//        }
+
+        if ($response['status'] == 'queued') {
+            return $this->sucessResult();
+        } else {
+            return $this->errorResult();
+        }
     }
 
     public function execute()
     {
-        /** @var Json $resultJson */
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
 
         $data = $this->getRequest()->getPostValue();
 
-        $status = sprintf("Hello Customer Welcome to CHK Magento extension check. Sent on %s", date("Y-m-d h:i:sa"));
+        $status = 'Hello Customer Welcome to CHK';
 
         if ($data['number']) {
             if ($this->_SNS->isEnabled()) {
                 $result = $this->checkSNS($status, $data['number']);
-                $resultJson->setData(json_encode($result));
             }
+
+            $resultJson->setData(json_encode($result));
             return $resultJson;
 
         }

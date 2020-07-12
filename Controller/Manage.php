@@ -12,11 +12,7 @@
  */
 namespace CHK\AmazonSNS\Controller;
 
-use Magento\Customer\Model\Session;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Exception\NotFoundException;
 
 /**
  * Customers newsletter subscription controller
@@ -26,17 +22,17 @@ abstract class Manage extends \Magento\Framework\App\Action\Action
     /**
      * Customer session
      *
-     * @var Session
+     * @var \Magento\Customer\Model\Session
      */
     protected $_customerSession;
 
     /**
-     * @param Context $context
-     * @param Session $customerSession
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Customer\Model\Session $customerSession
      */
     public function __construct(
-        Context $context,
-        Session $customerSession
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Customer\Model\Session $customerSession
     ) {
         parent::__construct($context);
         $this->_customerSession = $customerSession;
@@ -46,8 +42,7 @@ abstract class Manage extends \Magento\Framework\App\Action\Action
      * Check customer authentication for some actions
      *
      * @param RequestInterface $request
-     * @return ResponseInterface
-     * @throws NotFoundException
+     * @return \Magento\Framework\App\ResponseInterface
      */
     public function dispatch(RequestInterface $request)
     {

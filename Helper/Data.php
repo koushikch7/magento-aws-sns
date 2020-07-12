@@ -12,13 +12,6 @@
  */
 namespace CHK\AmazonSNS\Helper;
 
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Customer\Model\CustomerFactory;
 
@@ -26,16 +19,16 @@ use Magento\Customer\Model\CustomerFactory;
  * Class Data
  * @package CHK\AmazonSNS\Helper
  */
-class Data extends AbstractHelper
+class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-    const XML_PATH_CONFIG_STATUS = 'chk/mobile_login_option/status';
+    const XML_PATH_CONFIG_STATUS = 'sendsms/mobile_login_option/status';
 
-    const XML_PATH_CONFIG_MOBILE_LOGIN = 'chk/mobile_login_option/mobile_login_enabled';
+    const XML_PATH_CONFIG_MOBILE_LOGIN = 'sendsms/mobile_login_option/mobile_login_enabled';
 
-    const XML_PATH_CONFIG_MOBILE_ENABLE = 'chk/mobile_login_option/enable';
+    const XML_PATH_CONFIG_MOBILE_ENABLE = 'sendsms/mobile_login_option/enable';
     
-    const XML_PATH_CONFIG_MOBILE_REQUIRED = 'chk/mobile_login_option/is_required';
+    const XML_PATH_CONFIG_MOBILE_REQUIRED = 'sendsms/mobile_login_option/is_required';
 
 
     /**
@@ -49,25 +42,25 @@ class Data extends AbstractHelper
     protected $_storeManager;
 
     /**
-     * @var ScopeConfigInterface
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $_scopeConfig;
 
     /**
-     * @var CollectionFactory
+     * @var \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory
      */
     protected $_customersFactory;
 
     /**
-     * @param Context $context
+     * @param \Magento\Framework\App\Helper\Context $context
      * @param StoreManagerInterface $storeManagerInterface
-     * @param CollectionFactory $customersFactory
+     * @param \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customersFactory
      * @param CustomerFactory $customerFactory
      */
     public function __construct(
-        Context $context,
+        \Magento\Framework\App\Helper\Context $context,
         StoreManagerInterface $storeManagerInterface,
-        CollectionFactory $customersFactory,
+        \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customersFactory,
         CustomerFactory $customerFactory
     )
     {
@@ -98,11 +91,12 @@ class Data extends AbstractHelper
         return $this->_scopeConfig->getValue(self::XML_PATH_CONFIG_MOBILE_LOGIN);
     }
     /**
-     * @return RequestInterface
+     * @return \Magento\Framework\App\RequestInterface
      */
     public function getRequest()
     {
         return $this->_request;
+
     }
 
     /**
@@ -116,22 +110,26 @@ class Data extends AbstractHelper
     /**
      * @param $mobile
      * @return string
-     * @throws LocalizedException
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getEmailByMobile($mobile)
     {
+        /**
+         * @var \Magento\Customer\Model\Customer $customer
+         */
+        $mobile = '8880010730';
         return $this->_customersFactory->create()->addAttributeToFilter('mobile_numbers',$mobile)->getFirstItem()->getEmail();
     }
 
     /**
      * @param $email
      * @return bool
-     * @throws LocalizedException
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function checkExistingEmail($email)
     {
         /**
-         * @var Customer $customer
+         * @var \Magento\Customer\Model\Customer $customer
          */
         // @codingStandardsIgnoreStart
         $customer = $this->_customersFactory->create()->addAttributeToFilter(

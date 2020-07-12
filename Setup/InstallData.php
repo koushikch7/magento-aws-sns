@@ -53,7 +53,6 @@ class InstallData implements InstallDataInterface
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
      * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Exception
      */
     // @codingStandardsIgnoreStart
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
@@ -69,7 +68,7 @@ class InstallData implements InstallDataInterface
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
 
         $customerSetup->addAttribute(
-            Customer::ENTITY,
+            \Magento\Customer\Model\Customer::ENTITY,
             'mobile_numbers',
             array(
                 'type'     => 'varchar',
@@ -85,14 +84,14 @@ class InstallData implements InstallDataInterface
                 'note'     => '',
             )
         );
-        $my_attribute    = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'mobile_numbers');
+        $my_attribute    = $customerSetup->getEavConfig()->getAttribute(\Magento\Customer\Model\Customer::ENTITY, 'mobile_numbers');
         $used_in_forms[] = 'adminhtml_customer';
         $used_in_forms[] = 'checkout_register';
         $used_in_forms[] = 'customer_account_create';
         $used_in_forms[] = 'customer_account_edit';
         $used_in_forms[] = 'adminhtml_checkout';
-        $used_in_forms[] = 'chk_manage_index';
-        $used_in_forms[] = 'chk_manage_save';
+        $used_in_forms[] = 'sendsms_manage_index';
+        $used_in_forms[] = 'sendsms_manage_save';
         $my_attribute->setData('used_in_forms', $used_in_forms)->setData('is_used_for_customer_segment', true)->setData('is_system', 0)
             ->setData('is_user_defined', 1)->setData('is_visible', 1)->setData('sort_order', 100) ->setData("is_used_in_grid", 1)
             ->setData("is_visible_in_grid", 1)
@@ -101,7 +100,7 @@ class InstallData implements InstallDataInterface
         $my_attribute->save();
         
         $customerSetup->addAttribute(
-            Customer::ENTITY,
+            \Magento\Customer\Model\Customer::ENTITY,
             'sms_subscription_status',
             array(
                 'type'     => 'varchar',
@@ -117,7 +116,7 @@ class InstallData implements InstallDataInterface
                 'note'     => '',
             )
         );
-        $my_attribute1    = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'sms_subscription_status');
+        $my_attribute1    = $customerSetup->getEavConfig()->getAttribute(\Magento\Customer\Model\Customer::ENTITY, 'sms_subscription_status');
         $my_attribute1->setData('used_in_forms', $used_in_forms)->setData('is_used_for_customer_segment', true)->setData('is_system', 0)
             ->setData('is_user_defined', 1)->setData('is_visible', 1)->setData('sort_order', 110) ->setData("is_used_in_grid", 1)
             ->setData("is_visible_in_grid", 1)

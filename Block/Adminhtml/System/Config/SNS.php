@@ -15,16 +15,16 @@ namespace CHK\AmazonSNS\Block\Adminhtml\System\Config;
 use Magento\Config\Block\System\Config\Form\Field as FormField;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
-class SNS extends FormField
+class TwilioSms extends FormField
 {
-    protected $_sid = 'chk_sns_sid';
+    protected $_sid = 'sendsms_sns_sid';
 
-    protected $_token = 'chk_sns_token';
+    protected $_token = 'sendsms_sns_token';
 
 
-    protected $_from = 'chk_sns_from';
+    protected $_from = 'sendsms_sns_from';
 
-    protected $_number = 'chk_sns_number';
+    protected $_number = 'sendsms_sns_number';
 
     protected $_checkButtonLabel = 'Check Connect Amazon SNS';
 
@@ -93,7 +93,7 @@ class SNS extends FormField
             [
                 'button_label' => __($buttonLabel),
                 'html_id'      => $element->getHtmlId(),
-                'ajax_url'     => $this->_urlBuilder->getUrl('chk/system_config/check'),
+                'ajax_url'     => $this->_urlBuilder->getUrl('sendsms/system_config/check'),
             ]
         );
 

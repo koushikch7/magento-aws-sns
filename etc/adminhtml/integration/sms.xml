@@ -1,75 +1,64 @@
 <?xml version="1.0"?>
 <include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
     <group id="sns" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-        <label>AWS SNS</label>
-        <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>SNS</label>
+        <field id="enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Enable</label>
-            <config_path>chk/sns/enabled</config_path>
+            <config_path>sendsms/sns/enabled</config_path>
             <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
         </field>
-        <field  id="region" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>SNS Region</label>
-            <comment>Select your SNS Account Region</comment>
-            <tooltip>Your Region must be the same as your sns account Region</tooltip>
+        <field id="sid" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Enter SNS ID</label>
+            <comment>Enter your SNS Account ID</comment>
+            <tooltip>Your ID must be the same as your sns account id</tooltip>
             <validate>required-entry</validate>
-            <config_path>chk/sns/region</config_path>
-            <depends>
-                <field id="enabled">1</field>
-            </depends>
-            <source_model>CHK\AmazonSNS\Model\SNS\SnsRegions</source_model>
-        </field>
-        <field id="version" translate="label" type="text" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>AWS Service Version</label>
-            <comment><![CDATA[Leave it as blank if unknown, By Default 'latest' will be used.<br/>Please <a target="_blank" href="https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#cfg-version">Click Here</a> to know more about VERSION]]></comment>
-            <tooltip>Version uses 'latest' as default value. for more info check on the link mentioned in the comment</tooltip>
-            <config_path>chk/sns/version</config_path>
+            <config_path>sendsms/sns/sid</config_path>
             <depends>
                 <field id="enabled">1</field>
             </depends>
         </field>
-        <field id="sid" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Enter Access Key ID</label>
-            <comment>Enter your Access Key ID</comment>
-            <tooltip>Your Access Key is Key ID provided during Service Creation</tooltip>
+        <field id="token" translate="label" type="password" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Enter SNS Auth Token</label>
+            <comment>Enter your SNS Auth Token</comment>
+            <tooltip>Your token must be the same as your sns auth token</tooltip>
             <validate>required-entry</validate>
-            <config_path>chk/sns/sid</config_path>
+            <config_path>sendsms/sns/token</config_path>
             <depends>
                 <field id="enabled">1</field>
             </depends>
         </field>
-        <field id="token" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Enter Secret Access Key</label>
-            <comment>Enter Secret Access Key</comment>
-            <tooltip>Your Secret Access Key is for the authuntication given to connect with the Access Key Provided above</tooltip>
+        <field id="from" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Enter SNS Phone Number</label>
+            <comment>Enter your SNS Phone Number</comment>
+            <tooltip>Your number must be the same as your sns phone number</tooltip>
             <validate>required-entry</validate>
-            <config_path>chk/sns/token</config_path>
+            <config_path>sendsms/sns/from</config_path>
             <depends>
                 <field id="enabled">1</field>
             </depends>
         </field>
-        <field id="sender" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
-            <label>Sender ID</label>
-            <config_path>chk/sns/sender</config_path>
-            <tooltip>Sender Id may or MayNot required depending on the region you have selected</tooltip>
+        <field id="sender" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Sender</label>
+            <config_path>sendsms/sns/sender</config_path>
             <depends>
                 <field id="enabled">1</field>
             </depends>
         </field>
-        <field id="number" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+        <field id="number" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
             <label>Number Test</label>
-            <config_path>chk/sns/number</config_path>
+            <config_path>sendsms/sns/number</config_path>
             <comment>Please enter telephone number test connect SNS Integration !</comment>
             <depends>
                 <field id="enabled">1</field>
             </depends>
         </field>
-        <field id="button" translate="button_label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+        <field id="button" translate="button_label" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
             <button_label>Check Connect SNS</button_label>
-            <frontend_model>CHK\AmazonSNS\Block\Adminhtml\System\Config\SNS</frontend_model>
+            <frontend_model>CHK\AmazonSNS\Block\Adminhtml\System\Config\SNSSms</frontend_model>
             <depends>
                 <field id="enabled">1</field>
             </depends>
-            <attribute type="button_url">chk/check/sns</attribute>
+            <attribute type="button_url">sendsms/check/sns</attribute>
             <comment>Click this button Check Connect SNS</comment>
         </field>
     </group>

@@ -12,7 +12,7 @@
  */
 ?>
 <?php echo $block->getChildHtml('form_before')?>
-<form class="form form-chk-manage" action="<?php /* @escapeNotVerified */ echo $block->getAction() ?>" method="post" id="form-validate">
+<form class="form form-sendsms-manage" action="<?php /* @escapeNotVerified */ echo $block->getAction() ?>" method="post" id="form-validate">
     <fieldset class="fieldset">
         <?php echo $block->getBlockHtml('formkey')?>
         <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('SMS Subscription option') ?></span></legend><br>
@@ -21,7 +21,7 @@
             <label for="subscription" class="label"><span><?php /* @escapeNotVerified */ echo __('SMS Subscription') ?></span></label>
         </div>
         <?php /* Extensions placeholder */ ?>
-        <?php echo $block->getChildHtml('customer.form.chk.extra')?>
+        <?php echo $block->getChildHtml('customer.form.sendsms.extra')?>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary"><button type="submit" title="<?php /* @escapeNotVerified */ echo __('Save') ?>" class="action save primary"><span><?php /* @escapeNotVerified */ echo __('Save') ?></span></button></div>
@@ -29,4 +29,4 @@
     </div>
 </form>
 <?php /* Extensions placeholder */ ?>
-<?php echo $block->getChildHtml('customer.form.chk.extra2')?>
+<?php echo $block->getChildHtml('customer.form.sendsms.extra2')?>

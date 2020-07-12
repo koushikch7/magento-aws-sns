@@ -17,7 +17,7 @@
         <referenceBlock name="customer_account_navigation">
             <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-sms-marketing-link" after="customer-account-navigation-newsletter-subscriptions-link">
                 <arguments>
-                    <argument name="path" xsi:type="string">chk/manage</argument>
+                    <argument name="path" xsi:type="string">sendsms/manage</argument>
                     <argument name="label" xsi:type="string">SMS Notification Subscription</argument>
                 </arguments>
             </block>

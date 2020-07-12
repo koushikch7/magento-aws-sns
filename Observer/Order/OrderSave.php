@@ -12,7 +12,6 @@
  */
 namespace CHK\AmazonSNS\Observer\Order;
 
-use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -57,8 +56,6 @@ class OrderSave implements ObserverInterface
     protected $_scopeConfig;
 
     /**
-     * @param ScopeConfigInterface $scopeConfig
-     * @param SNS $SNS
      * @param CurrentCustomer $currentCustomer
      * @param Order $order
      * @param Customer $customer
@@ -80,24 +77,28 @@ class OrderSave implements ObserverInterface
     }
 
     /**
+     * Handler for 'customer_logout' event.
+     *
      * @param Observer $observer
      */
-    public function execute(Observer $observer)
+    public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /** @var Order $order */
+        /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getEvent()->getOrder();
+        $orderId =$order->getId();
         $orderTotal = $order->getBaseGrandTotal();
         $statusBefore =  $order->getOrigData('status');
         $statusAfter = $order->getStatus();
-        if (($statusBefore == "pending" && $statusAfter == "processing") && ($this->_scopeConfig->getValue('chk/content/enabled_order'))) {
+        if (($statusBefore == "pending" && $statusAfter == "processing") && ($this->_scopeConfig->getValue('sendsms/content/enabled_order'))) {
             $content = $this->_scopeConfig
-            ->getValue('chk/content/order_success');
-        } elseif (($statusBefore != $statusAfter) && ($this->_scopeConfig->getValue('chk/content/enabled_update'))) {
+            ->getValue('sendsms/content/order_success');
+        } elseif (($statusBefore != $statusAfter) && ($this->_scopeConfig->getValue('sendsms/content/enabled_update'))) {
             $content = $this->_scopeConfig
-            ->getValue('chk/content/update_status');
+            ->getValue('sendsms/content/update_status');
         }
-        /** @var CustomerInterface $customer */
-
+        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
+        
+        #$phoneNumber = $customer->getMobileNumbers();
         $phoneNumber=$order->getBillingAddress()->getTelephone();
         $customerName=$order->getBillingAddress()->getFirstname();
         $increment_id = $order->getIncrementId();
@@ -111,7 +112,7 @@ class OrderSave implements ObserverInterface
             '{{tracking_number}}' => isset($tracking[0]['track_number']) ? $tracking[0]['track_number'] : ""
         ];
         $status = $this->_scopeConfig
-        ->getValue('chk/mobile_login_option/status');
+        ->getValue('sendsms/mobile_login_option/status');
         if ($phoneNumber && isset($content) && $status) {
             $newContent = strtr($content, $replaceString);
             if ($this->_SNS->isEnabled()) {

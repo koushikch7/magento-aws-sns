@@ -12,24 +12,17 @@
  */
 namespace CHK\AmazonSNS\Controller\Manage;
 
-use Exception;
 use Magento\Customer\Api\CustomerRepositoryInterface as CustomerRepository;
-use Magento\Customer\Model\Session;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Data\Form\FormKey\Validator;
-use Magento\Newsletter\Model\SubscriberFactory;
-use Magento\Store\Model\StoreManagerInterface;
 
 class Save extends \CHK\AmazonSNS\Controller\Manage
 {
     /**
-     * @var Validator
+     * @var \Magento\Framework\Data\Form\FormKey\Validator
      */
     protected $formKeyValidator;
 
     /**
-     * @var StoreManagerInterface
+     * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
 
@@ -39,27 +32,27 @@ class Save extends \CHK\AmazonSNS\Controller\Manage
     protected $customerRepository;
 
     /**
-     * @var SubscriberFactory
+     * @var \Magento\Newsletter\Model\SubscriberFactory
      */
     protected $subscriberFactory;
 
     /**
      * Initialize dependencies.
      *
-     * @param Context $context
-     * @param Session $customerSession
-     * @param Validator $formKeyValidator
-     * @param StoreManagerInterface $storeManager
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param CustomerRepository $customerRepository
-     * @param SubscriberFactory $subscriberFactory
+     * @param \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory
      */
     public function __construct(
-        Context $context,
-        Session $customerSession,
-        Validator $formKeyValidator,
-        StoreManagerInterface $storeManager,
+        \Magento\Framework\App\Action\Context $context,
+        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         CustomerRepository $customerRepository,
-        SubscriberFactory $subscriberFactory
+        \Magento\Newsletter\Model\SubscriberFactory $subscriberFactory
     ) {
         $this->storeManager = $storeManager;
         $this->formKeyValidator = $formKeyValidator;
@@ -71,7 +64,7 @@ class Save extends \CHK\AmazonSNS\Controller\Manage
     /**
      * Save newsletter subscription preference action
      *
-     * @return ResponseInterface
+     * @return void|null
      */
     public function execute()
     {
@@ -81,7 +74,7 @@ class Save extends \CHK\AmazonSNS\Controller\Manage
 
         $customerId = $this->_customerSession->getCustomerId();
         if ($customerId === null) {
-            $this->messageManager->addErrorMessage(__('Something went wrong while saving your Send SMS subscription.'));
+            $this->messageManager->addError(__('Something went wrong while saving your Send SMS subscription.'));
         } else {
             try {
                 $customer = $this->customerRepository->getById($customerId);
@@ -90,14 +83,14 @@ class Save extends \CHK\AmazonSNS\Controller\Manage
                 $this->customerRepository->save($customer);
                 if ((boolean)$this->getRequest()->getParam('is_subscribed', false)) {
                     $customer->setCustomAttribute('sms_subscription_status', '1');
-                    $this->messageManager->addSuccessMessage(__('We saved your Send SMS subscription.'));
+                    $this->messageManager->addSuccess(__('We saved your Send SMS subscription.'));
                 } else {
                     $customer->setCustomAttribute('sms_subscription_status', '0');
-                    $this->messageManager->addSuccessMessage(__('We removed your Send SMS subscription.'));
+                    $this->messageManager->addSuccess(__('We removed your Send SMS subscription.'));
                 }
                 $this->customerRepository->save($customer);
-            } catch (Exception $e) {
-                $this->messageManager->addErrorMessage(__('Something went wrong while saving your Send SMS subscription.'));
+            } catch (\Exception $e) {
+                $this->messageManager->addError(__('Something went wrong while saving your Send SMS subscription.'));
             }
         }
         $this->_redirect('customer/account/');

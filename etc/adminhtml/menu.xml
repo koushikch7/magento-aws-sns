@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="CHK_AmazonSNS::AmazonSNS" title="CHK" module="CHK_AmazonSNS" sortOrder="50" resource="CHK_AmazonSNS::AmazonSNS" />
+        <add id="CHK_AmazonSNS::Send_SMS" title="Send SMS" module="CHK_AmazonSNS" sortOrder="10" action="adminhtml/system_config/edit/section/sendsms" resource="CHK_AmazonSNS::index" parent="CHK_AmazonSNS::AmazonSNS"/>	
+    </menu>
+</config>

@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="CHK_AmazonSNS::config_chk" title="CHK AmazonSNS" />
+                            <resource id="CHK_AmazonSNS::config_sendsms" title="CHK SMS Marketing Store Config" />
                         </resource>
                     </resource>
                 </resource>

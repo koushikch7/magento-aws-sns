@@ -10,17 +10,12 @@
  * @package  CHK_AmazonSNS
  * @author   Koushik CH <info@chkoushik.com>
  */
-
 namespace CHK\AmazonSNS\Model\SNS;
-
-use Aws\Exception\AwsException;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Aws\Sns\SnsClient;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class SendSms
- * @package CHK\AmazonSNS\Model\SNS
+ * @package CHK\AmazonSNS\Model\Textmarketer
  */
 class SendSms
 {
@@ -30,59 +25,57 @@ class SendSms
     protected $_scopeConfig;
 
     /**
+     * @var \Magento\Framework\HTTP\ZendClientFactory
+     */
+    protected $zendClientFactory;
+
+    /**
      * SendSms constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
-     * @param LoggerInterface $logger
+     * @param \Magento\Framework\HTTP\ZendClientFactory $zendClientFactory
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
-    )
+        \Magento\Framework\HTTP\ZendClientFactory $zendClientFactory)
     {
         $this->_scopeConfig = $scopeConfig;
-        $this->logger = $logger;
+        $this->zendClientFactory = $zendClientFactory;
     }
     /**
      * @return mixed
      */
     public function isEnabled()
     {
-        return $this->_scopeConfig->getValue('chk/sns/enabled');
+        return $this->_scopeConfig->getValue('sendsms/sns/enabled');
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getSNSRegion()
+    public function getSNSId()
     {
-        return $this->_scopeConfig->getValue('chk/sns/region');
+        return $this->_scopeConfig->getValue('sendsms/sns/sid');
     }
 
     /**
-     * @return mixed
-     */
-    protected function getSNSKey()
-    {
-        return $this->_scopeConfig->getValue('chk/sns/sid');
-    }
-
-    /**
-     * Getting AmazonSNS API Password
+     * Getting TextmarketerSMS API Password
      * @return string
      */
 
-    protected function getSNSSecretKey()
+    public function getSNSToken()
     {
-        return $this->_scopeConfig->getValue('chk/sns/token');
+        return $this->_scopeConfig->getValue('sendsms/sns/token');
+    }
+
+    public function getSNSPhoneNumber()
+    {
+        return $this->_scopeConfig->getValue('sendsms/sns/from');
     }
 
     /**
      * @return mixed
      */
-    protected function getSender()
+    public function getSender()
     {
-        return $this->_scopeConfig->getValue('chk/sns/sender');
+        return $this->_scopeConfig->getValue('sendsms/sns/sender');
     }
 
     /**
@@ -90,57 +83,44 @@ class SendSms
      */
     public function getContentSMS()
     {
-        return $this->_scopeConfig->getValue('chk/sns/content');
+        return $this->_scopeConfig->getValue('sendsms/sns/content');
     }
 
     /**
      * @return mixed
      */
-    protected function getNumber()
+    public function getNumber()
     {
-        return $this->_scopeConfig->getValue('chk/sns/number');
+        return $this->_scopeConfig->getValue('sendsms/sns/number');
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getVersion()
-    {
-        return $this->_scopeConfig->getValue('chk/sns/version');
-    }
 
-    /**
-     * @param $code
-     * @param $mobileNumber
-     * @return mixed|string
-     */
-    public function sendSMS($code, $mobileNumber)
+    public function sendSMS($code, $mobiNumber)
     {
-        if($this->isEnabled()) {
-            $config = array(
-                'region' => $this->getSNSRegion(),
-                'version' => $this->getVersion()?$this->getVersion():'latest',
-                'credentials' => array('key' => $this->getSNSKey(), 'secret' => $this->getSNSSecretKey()),
-            );
-            $senderId = $this->getSender() ? $this->getSender() :'CHKAWSSNS';
-            try {
-                $amazonSNS = new SnsClient($config);
+        $sid = urlencode($this->getSNSId());
 
-                return $amazonSNS->publish([
-                    'Message' => $code,
-                    'PhoneNumber' => $mobileNumber,
-                    'MessageAttributes' => array(
-                        'AWS.SNS.SMS.SenderID' => array(
-                            'DataType' => 'String',
-                            'StringValue' => $senderId,
-                        )
-                    )
-                ]);
-            } catch (AwsException $e) {
-                $this->logger->error($e->getMessage());
-                return $e->getMessage();
-            }
-        }
-        return __('Please Enable and Save the Configure to Proceed');
+        $token = urlencode($this->getSNSToken());
+
+        $from = $this->getSNSPhoneNumber();
+
+        $client = $this->zendClientFactory->create();
+
+        $uri = 'https://api.sns.com/2010-04-01/Accounts/' . $sid .':'.$token. '/Messages';
+        $data =
+            '&To=+'.urlencode($mobiNumber).
+            '&From=+'.urlencode($from).
+            '&Body='.urlencode($code);
+
+         $client->setUri($uri);
+
+         $client->setConfig([ 'timeout' => 300]);
+
+         $method   = \Zend_Http_Client::GET;
+
+         $response = $client->request($method)->getBody();
+
+         $data = json_decode($response, true);
+
+         return $data;
     }
 }

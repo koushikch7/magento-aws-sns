@@ -12,7 +12,7 @@
  */
 namespace CHK\AmazonSNS\Observer\Customer;
 
-use Magento\Customer\Api\Data\CustomerInterface;
+use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use CHK\AmazonSNS\Model\SNS\SendSms as SNS;
@@ -27,7 +27,7 @@ class CustomerRegistration implements ObserverInterface
 {
 
     /**
-     * @var Data
+     * @var \CHK\AmazonSNS\Helper\Data
      */
     protected $helper;
 
@@ -41,10 +41,8 @@ class CustomerRegistration implements ObserverInterface
      * @var ScopeConfigInterface
      */
     protected $_scopeConfig;
-
     /**
-     * @param ScopeConfigInterface $scopeConfig
-     * @param SNS $SNS
+     * @param Textlocal $textlocal
      * @param Data $helperData
      */
     public function __construct(
@@ -64,17 +62,17 @@ class CustomerRegistration implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        /** @var CustomerInterface $customer */
+        /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         $customer = $observer->getEvent()->getCustomer();
         $customerEmail = $customer->getEmail();
         $customerName = $customer->getFirstname();
         $mobile_number = $customer->getCustomAttribute('mobile_numbers')->getValue();
-        if ($this->_scopeConfig->getValue('chk/content/enabled_register')) {
+        if ($this->_scopeConfig->getValue('sendsms/content/enabled_register')) {
             $content = $this->_scopeConfig
-            ->getValue('chk/content/customer_register');
+            ->getValue('sendsms/content/customer_register');
         }
         $status = $this->_scopeConfig
-        ->getValue('chk/mobile_login_option/status');
+        ->getValue('sendsms/mobile_login_option/status');
         $replaceString = [
             '{{customer_name}}' => $customerName,
             '{{customer_email}}' => $customerEmail

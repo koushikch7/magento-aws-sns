@@ -18,7 +18,7 @@ class Index extends \CHK\AmazonSNS\Controller\Manage
     {
         $this->_view->loadLayout();
 
-        if ($block = $this->_view->getLayout()->getBlock('customer_chk')) {
+        if ($block = $this->_view->getLayout()->getBlock('customer_sendsms')) {
             $block->setRefererUrl($this->_redirect->getRefererUrl());
         }
         $this->_view->getPage()->getConfig()->getTitle()->set(__('Send SMS Subscription'));

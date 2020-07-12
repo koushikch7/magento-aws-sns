@@ -14,8 +14,6 @@ namespace CHK\AmazonSNS\Plugin;
 
 use CHK\AmazonSNS\Helper\Data;
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Model\AccountManagement;
-use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class MobileAuthenticate
@@ -46,14 +44,13 @@ class MobileAuthenticate
     }
 
     /**
-     * @param AccountManagement $subject
+     * @param \Magento\Customer\Model\AccountManagement $subject
      * @param $username
      * @param $password
      * @return array|null
-     * @throws LocalizedException
      */
     // @codingStandardsIgnoreStart
-    public function beforeAuthenticate(AccountManagement $subject,$username, $password)
+    public function beforeAuthenticate(\Magento\Customer\Model\AccountManagement $subject,$username, $password)
     // @codingStandardsIgnoreStart 
     {
         if ($this->_helper->checkExistingEmail($username))
