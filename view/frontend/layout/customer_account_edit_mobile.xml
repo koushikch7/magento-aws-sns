@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<update handle="customer_account"/>
+<body>
+    <referenceContainer name="form.additional.info">
+        <container name="form.additional.info2" as="form_additional_info2"  htmlTag="div" htmlClass="some-container" />
+        <block class="CHK\AmazonSNS\Block\Account\MobileNumber" name="smobile_additional_info_customer" template="CHK_AmazonSNS::form/register.phtml"/>
+    </referenceContainer>
+    <referenceBlock name="customer_edit">
+        <action method="setTemplate">
+            <argument name="template" xsi:type="string">CHK_AmazonSNS::form/edit.phtml</argument>
+        </action>
+        <block class="CHK\AmazonSNS\Block\Account\MobileNumber" name="ssmobile_additional_info_customer" template="CHK_AmazonSNS::form/register.phtml">
+        </block>
+    </referenceBlock>
+</body>
+</page>

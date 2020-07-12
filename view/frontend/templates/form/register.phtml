@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+/** @var  $block \CHK\AmazonSNS\Block\Account\MobileNumber */
+$is_required_field = $block->isMobileRequired();
+$mobileNumber = $block->getAccountInfo();
+?>
+
+<fieldset class="fieldset create account"
+    <?php if ($is_required_field) { ?>
+        data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+    <?php } ?>
+>
+    <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('Additional Information') ?></span></legend><br>
+
+    <div class="field mobile_numbers <?php if ($is_required_field) {
+        ?> required <?php
+    } ?>">
+        <label for="mobile_numbers" class="label"><span><?php /* @escapeNotVerified */ echo __('Mobile Numbers') ?></span></label>
+        <div class="control">
+            <input type="text" name="mobile_numbers" id="mobile_numbers" title="<?php /* @escapeNotVerified */ echo __('Mobile Numbers') ?>"
+                   class="input-text"  <?php  if ($is_required_field) {
+                ?> data-validate="{required:true,'validate-greater-than-zero':true}" <?php
+            } ?> autocomplete="off" value="<?php echo $block->getAccountInfo(); ?>" >
+        </div>
+    </div>
+</fieldset>

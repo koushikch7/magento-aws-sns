@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="CHK" sortOrder="90" translate="label">
+            <label>CHK</label>
+        </tab>
+        <section id="chk" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Send SMS</label>
+            <tab>CHK</tab>
+            <resource>CHK_AmazonSNS::config_chk</resource>
+            <group id="mobile_login_option" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="status" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Send SMS</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Mobile Number</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="status">1</field>
+                    </depends>
+                    <comment>When enabled, customer will be asked to enter his mobile number while sign-up. We will send SMS to this number</comment>
+                </field>
+                <field id="is_required" translate="label" type="select" sortOrder="5" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Make mobile number a required field </label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enable">1</field>
+                        <field id="status">1</field>
+                    </depends>
+                    <comment>If you choose yes the mobile input is required field when sign-up</comment>
+                </field>
+                <field id="mobile_login_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Mobile Login Option</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Allow customer to use mobile number to login to store.</comment>
+                    <depends>
+                        <field id="enable">1</field>
+                        <field id="status">1</field>
+                    </depends>
+                </field>
+            </group>
+
+            <group id="content" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Setting SMS Content</label>
+                <field id="enabled_register" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Customer Register</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="customer_register" translate="label" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Customer Register</label>
+                    <depends>
+                        <field id="enabled_register">1</field>
+                    </depends>
+                    <comment><![CDATA[Available variables that you can use in your SMS: {{customer_name}},
+                 {{customer_email}}]]>
+                    </comment>
+                </field>
+                <field id="enabled_order" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Order Success</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_success" translate="label" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Order Success</label>
+                    <depends>
+                        <field id="enabled_order">1</field>
+                    </depends>
+                    <comment><![CDATA[Available variables that you can use in your SMS: {{customer_name}},
+                 {{order_id}}, {{order_base_grand_totals}}]]>
+                    </comment>
+                </field>
+                <field id="enabled_update" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Order Update</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="update_status" translate="label" type="textarea" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Order Update</label>
+                    <depends>
+                        <field id="enabled_update">1</field>
+                    </depends>
+                    <comment><![CDATA[Available variables that you can use in your SMS: {{customer_name}},
+                 {{order_id}}, {{old_status}},{{new_status}}]]>
+                    </comment>
+                </field>
+            </group>
+
+            <group id="integration" translate="label" type="text" sortOrder="3" showInStore="1" showInWebsite="1" showInDefault="1">
+                <label>Integration Setting</label>
+                <comment>NOTE: Before checking connect of a brand name, make sure you enable that brand and then click Save Config button  </comment>
+                <include path="CHK_AmazonSNS::integration/sms.xml"/>
+            </group>
+
+        </section>
+    </system>
+</config>

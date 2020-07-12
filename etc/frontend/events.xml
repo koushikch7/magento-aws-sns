@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <event name="layout_load_before"> <!-- triggered right after layout is loaded -->
+        <observer name="CHK_AmazonSNS" instance="CHK\AmazonSNS\Observer\Layout\Mobile" />
+    </event>
+    <!--Customer create new account-->
+    <event name="customer_register_success">
+        <observer name="CHK_AmazonSNS" instance="CHK\AmazonSNS\Observer\Customer\CustomerRegistration" />
+    </event>
+
+    <event name="sales_order_save_commit_after">
+        <observer name="AmazonSNS_order" instance="CHK\AmazonSNS\Observer\Order\OrderSave"/>
+    </event>
+
+</config>

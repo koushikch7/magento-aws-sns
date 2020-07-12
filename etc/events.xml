@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_save_commit_after">
+        <observer name="chk_order" instance="CHK\AmazonSNS\Observer\Order\OrderSave"/>
+    </event>
+</config>

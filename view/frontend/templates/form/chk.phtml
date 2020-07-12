@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category SMS
+ * @package  CHK_AmazonSNS
+ * @author   Koushik CH <info@chkoushik.com>
+ */
+?>
+<?php echo $block->getChildHtml('form_before')?>
+<form class="form form-chk-manage" action="<?php /* @escapeNotVerified */ echo $block->getAction() ?>" method="post" id="form-validate">
+    <fieldset class="fieldset">
+        <?php echo $block->getBlockHtml('formkey')?>
+        <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('SMS Subscription option') ?></span></legend><br>
+        <div class="field choice">
+            <input type="checkbox" name="is_subscribed" id="subscription" value="1" title="<?php /* @escapeNotVerified */ echo __('SMS Subscription') ?>"<?php if ($block->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox">
+            <label for="subscription" class="label"><span><?php /* @escapeNotVerified */ echo __('SMS Subscription') ?></span></label>
+        </div>
+        <?php /* Extensions placeholder */ ?>
+        <?php echo $block->getChildHtml('customer.form.chk.extra')?>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary"><button type="submit" title="<?php /* @escapeNotVerified */ echo __('Save') ?>" class="action save primary"><span><?php /* @escapeNotVerified */ echo __('Save') ?></span></button></div>
+        <div class="secondary"><a class="action back" href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>"><span><?php /* @escapeNotVerified */ echo __('Back') ?></span></a></div>
+    </div>
+</form>
+<?php /* Extensions placeholder */ ?>
+<?php echo $block->getChildHtml('customer.form.chk.extra2')?>

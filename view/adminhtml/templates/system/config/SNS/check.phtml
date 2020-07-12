@@ -1,0 +1,61 @@
+<?php
+/**
+ * Copyright © 2019 CHK. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ *
+ * CHK_AmazonSNS extension
+ * NOTICE OF LICENSE
+ *
+ * @category  CHK
+ * @package   CHK_AmazonSNS
+ * @author Koushik CH <info@chkoushik.com>
+ */
+?>
+<div class="actions actions-get-auth-token sns">
+    <div id="auth_token_result_sns" class="message-validation hide"></div>
+    <button  class="action-validate-get-auth-token-sns" type="button"  id="<?php echo $block->getHtmlId() ?>">
+        <span><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getButtonLabel()) ?></span>
+    </button>
+    <style>.success.message-validation{color:green;}.error.message-validation{color: red;}</style>
+</div>
+<script>
+    require(['jquery'], function(jQuery){
+        jQuery('.action-validate-get-auth-token-sns').click(function(){
+            var sid = jQuery('#chk_integration_sns_sid').val();
+            var token = jQuery('#chk_integration_sns_token').val();
+            var number = jQuery('#chk_integration_sns_number').val();
+            var data = {
+                sid: sid,
+                token : token,
+                number : number,
+                form_key: FORM_KEY
+            };
+            var url = '<?php echo $block->getUrl('chk/system_config/check'); ?>//';
+            var result_token = jQuery('#auth_token_result_sns');
+            if(number) {
+                jQuery.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    showLoader: true,
+                    success: function (response) {
+                        var responseObj = JSON.parse(response);
+                        console.log(responseObj);
+                        jQuery('#chk_sns_auth_token').val(responseObj);
+                        if (!responseObj) {
+                            result_token.removeClass('hide').removeClass('error').addClass('success');
+                            result_token.html('SMS Sent, Please Check Inbox of the Recepient');
+                        } else {
+                            result_token.removeClass('hide').removeClass('success').addClass('error');
+                            result_token.html(responseObj);
+                        }
+                    }
+                });
+            } else {
+                result_token.removeClass('hide').removeClass('success').addClass('error');
+                result_token.html('Please Enter the Number and Try Again!');
+            }
+        });
+    });
+</script>
